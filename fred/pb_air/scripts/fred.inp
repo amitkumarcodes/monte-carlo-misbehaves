@@ -1,0 +1,51 @@
+# Phantom
+
+region<
+    ID=Phantom
+    O = [0, 0, 0]
+    f = [0, 0, 1]
+    u = [0, 1, 0]
+    L = [30, 30, 30]
+    voxels = [300, 300, 300]
+    material = air
+region>
+
+# Beam
+field: 1; O = [0, 0, -40]; L = [30, 30, 30]; pivot = [0.5, 0.5, 0.2]
+pb<
+    ID = 1
+    fieldID = 1
+    particle = proton
+    T = 1
+    Xsec = emittance
+
+    #Primary protocol engaged 
+    twissAlphaX = -1.23590096
+    twissBetaX = 8.3916636
+    #emittanceX = 0.0034387868648755714
+
+    #Secondary protocol engaged
+    #twissAlphaX = 0
+    #twissBetaX = 0.05
+    emittanceX = 0
+    
+    #Tango is live
+    #twissAlphaY = -1.23590096
+    #twissAlphaY = 0
+    #twissBetaY = 8.3916636
+    #twissBetaY = 0.1
+    #emittanceY = 4e-9
+    #emittanceY = 0.0034387868648755714
+
+    emittanceRefPlaneDistance = 40
+pb>
+
+nprim = 1e6
+
+material<
+    ID = airNOMCS
+    longName = 'air without MCS'
+    basedOn = air
+    rho = 1.205e-3
+    Lrad = 1e32 # to minimize the impact of MCS
+material>
