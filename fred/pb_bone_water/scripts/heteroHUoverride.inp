@@ -1,0 +1,56 @@
+### Phantom
+
+region<
+    ID = Phantom
+    CTscan = CT.mha
+    pivot = [0.5, 0.5, 0]
+    O = [0, 0, 0]
+    score = [dose]
+region>
+
+lUseInternalHU2Mat = t
+
+override: Phantom HU0 outside BoneSlice.mha
+override: Phantom HU+1300 inside BoneSlice.mha
+
+## Beam
+field: 1 ; O = [0, 0, -40]; L=[20, 20, 20]; pivot = [0.5,0.5,0.2]
+pb<
+    ID = 1
+    fieldID = 1
+    particle = proton
+    Emean = 100 # Mean energy in MeV
+    EFWHM = 5 # Energy spread as FWHM of a Gaussian distribution in MeV
+    FWHM = 2
+    Xsec = emittance
+
+    # the Twiss parameters corresponding to the beam sizes of 0.5, 0.3, 0.2, 0.4, and 0.8 cm (sigma)
+    # at distances from the ISO of -20, -10, 0, 10 and 20 cm, respectively
+    twissAlphaX=-1.235900963624794
+    twissBetaX=8.3916636857885
+    #emittanceX=0.0034387868648755714
+    
+    emittanceX=0.00
+
+    emittanceRefPlaneDistance=40; # Field_1 origin is at 40 cm from ISO
+
+    nprim=1e5
+
+pb>
+
+
+## Generating beamlets
+
+def: rows = 40
+def: cols = 40
+def: spacing = 0.2 #mm
+
+for(i in range(rows))<
+    for(j in range(cols))<
+        def: x = (j - (cols-1)/2) * spacing
+        def: y = (i - (rows-1)/2) * spacing
+
+        transform: field_1 move_to $x $y -40
+        deliver: all
+    for>
+for> 
